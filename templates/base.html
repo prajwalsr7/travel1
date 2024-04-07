@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link href="https://fonts.cdnfonts.com/css/andale-mono" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <header>
+        <nav>
+            <div class="container">
+                <a href="/">Home</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Destinations 
+                      <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                      <a href="/europe">Europe</a>
+                      <a href="/northamerica">North America</a>
+                      <a href="/asia">Asia</a>
+                      <a href="/australia">Australia</a>
+                    </div> 
+                </div>
+                <a href="/about">About</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Currency exchange 
+                      <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" value="1">
+                        <label for="from_currency">From:</label>
+                        <select id="from_currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <!-- Add other currencies here -->
+                        </select>
+                        <label for="to_currency">To:</label>
+                        <select id="to_currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <!-- Add other currencies here -->
+                        </select>
+                        <button class="button-57" role="button" onclick="convertCurrency()">Convert<span>Currency</span></button>
+                        <div id="result"></div>
+                        <script src="{{ url_for('static', filename='javascript/convert.js') }}"></script>
+                    </div> 
+                </div>
+            </div>
+        </nav>
+    </header>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+</html>

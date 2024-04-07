@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% block body %}
+<body>
+    <div class="grid-container">
+        {% for destination in europe_destinations %}
+            <div class="destination-card">
+                <img src="{{ destination.image_path }}" alt="{{ destination.name }}" class="destination-image">
+                <h2>{{ destination.name }}</h2>
+                <p><strong>Country:</strong> {{ destination.country }}</p>
+                <p><strong>Description:</strong> {{ destination.description }}</p>
+                <p><strong>Continent:</strong> Europe</p>
+                <p><strong>Price:</strong> ${{ destination.price }}</p>
+                <button class="button-57" role="button" onclick="window.location.href = '#';"><span class="text">Book</span><span>Now</span></button>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

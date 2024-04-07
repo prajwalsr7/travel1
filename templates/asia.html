@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% block body %}
+<body>
+    <div class="grid-container">
+        {% for destination in asia_destinations %}
+            <div class="destination-card">
+                <img src="{{ destination.image_path }}" alt="{{ destination.name }}" class="destination-image">
+                <h2>{{ destination.name }}</h2>
+                <p><strong>Country:</strong> {{ destination.country }}</p>
+                <p><strong>Description:</strong> {{ destination.description }}</p>
+                <p><strong>Continent:</strong> Asia</p>
+                <p><strong>Price:</strong> ${{ destination.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}
