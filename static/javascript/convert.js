@@ -4,7 +4,7 @@ function convertCurrency() {
     var toCurrency = document.getElementById("to_currency").value;
 
     $.ajax({
-        url: "http://localhost:5000/convert",
+        url: "http://currency.eba-qchvcgzv.us-east-1.elasticbeanstalk.com/convert",
         type: "GET",
         data: { amount: amount, from_currency: fromCurrency, to_currency: toCurrency },
         success: function(response) {

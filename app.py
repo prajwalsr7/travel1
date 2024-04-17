@@ -1,17 +1,64 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect,session
 import os
+import random
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_agency.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'x22228811'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+# Function to check if user is logged in
+def is_logged_in():
+    return 'user_id' in session
+
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username, password=password).first()
+        if user:
+            session['user_id'] = user.id
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html', error='Invalid username or password')
+    return render_template('login.html')
+
+# Logout route
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 @app.route('/')
-def home():
-	return render_template('index.html')
+def index():
+    is_authenticated = is_logged_in()
+    return render_template('index.html', is_authenticated=is_authenticated)
+
+# Signup route
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        # Check if username or email already exists
+        if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
+            return render_template('signup.html', error='Username or email already exists')
+        else:
+            # Create a new user
+            new_user = User(username=username, email=email, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+            return redirect(url_for('index'))
+    return render_template('signup.html')
 
 @app.route('/about')
 def about():
@@ -38,6 +85,23 @@ def northamerica():
 def australia():
      australia_destinations = Destination.query.filter_by(continent_id=4).all()
      return render_template('australia.html', australia_destinations=australia_destinations)
+
+@app.route('/bookings_form')
+def bookings_form():
+    return render_template('bookings_form.html')
+
+
+@app.route('/bookings', methods=['POST'])
+def submit_booking():
+    # Handle form submission and create booking
+    # For demonstration purposes, generate a random booking ID
+    booking_id = random.randint(1000, 9999)
+    return redirect(url_for('congratulations', booking_id=booking_id))
+
+
+@app.route('/congratulations/<int:booking_id>')
+def congratulations(booking_id):
+    return render_template('congratulations.html', booking_id=booking_id)
 
 # Define models
 class User(db.Model):
@@ -100,5 +164,5 @@ def add_destination():
     return redirect(url_for('add_destination_form'))
 
 if __name__ == '__main__':
-    app.run(port=5001,debug=True)
+    app.run(debug=True)
 

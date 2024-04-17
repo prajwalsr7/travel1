@@ -22,7 +22,16 @@
                       <a href="/australia">Australia</a>
                     </div> 
                 </div>
-                <a href="/about">About</a>
+                {% if not is_authenticated %}
+                    <span class="auth-links">
+                        <a href="/login">Login</a>
+                        <a href="/signup">Signup</a>
+                    </span>
+                {% else %}
+                    <span class="auth-links">
+                        <a href="/logout">Logout</a>
+                    </span>
+                {% endif %}
                 <div class="dropdown">
                     <button class="dropbtn">Currency exchange 
                       <i class="fa fa-caret-down"></i>
