@@ -5,20 +5,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_agency.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'x22228811'
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+application = Flask(__name__)
+CORS(application)
+application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_agency.db'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+application.config['SECRET_KEY'] = 'x22228811'
+db = SQLAlchemy(application)
+migrate = Migrate(application, db)
 
 # Function to check if user is logged in
 def is_logged_in():
     return 'user_id' in session
 
 # Login route
-@app.route('/login', methods=['GET', 'POST'])
+@application.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -32,17 +32,17 @@ def login():
     return render_template('login.html')
 
 # Logout route
-@app.route('/logout')
+@application.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
-@app.route('/')
+@application.route('/')
 def index():
     is_authenticated = is_logged_in()
     return render_template('index.html', is_authenticated=is_authenticated)
 
 # Signup route
-@app.route('/signup', methods=['GET', 'POST'])
+@application.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
@@ -60,38 +60,38 @@ def signup():
             return redirect(url_for('index'))
     return render_template('signup.html')
 
-@app.route('/about')
+@application.route('/about')
 def about():
 	return render_template('about.html')
 
-@app.route('/europe')
+@application.route('/europe')
 def europe():
     # Query the database to fetch destinations in Europe (assuming Europe has continent_id = 2)
     europe_destinations = Destination.query.filter_by(continent_id=2).all()
     return render_template('europe.html', europe_destinations=europe_destinations)
 
-@app.route('/asia')
+@application.route('/asia')
 def asia():
      # Query the database to fetch destinations in Asia (assuming Asia has continent_id = 1)
      asia_destinations = Destination.query.filter_by(continent_id=1).all()
      return render_template('asia.html', asia_destinations=asia_destinations)
 
-@app.route('/northamerica')
+@application.route('/northamerica')
 def northamerica():
      northamerica_destinations = Destination.query.filter_by(continent_id=3).all()
      return render_template('northamerica.html', northamerica_destinations=northamerica_destinations)
 
-@app.route('/australia')
+@application.route('/australia')
 def australia():
      australia_destinations = Destination.query.filter_by(continent_id=4).all()
      return render_template('australia.html', australia_destinations=australia_destinations)
 
-@app.route('/bookings_form')
+@application.route('/bookings_form')
 def bookings_form():
     return render_template('bookings_form.html')
 
 
-@app.route('/bookings', methods=['POST'])
+@application.route('/bookings', methods=['POST'])
 def submit_booking():
     # Handle form submission and create booking
     # For demonstration purposes, generate a random booking ID
@@ -99,7 +99,7 @@ def submit_booking():
     return redirect(url_for('congratulations', booking_id=booking_id))
 
 
-@app.route('/congratulations/<int:booking_id>')
+@application.route('/congratulations/<int:booking_id>')
 def congratulations(booking_id):
     return render_template('congratulations.html', booking_id=booking_id)
 
@@ -133,16 +133,16 @@ class Continent(db.Model):
     destinations = db.relationship('Destination', backref='continent', lazy=True)
 
 # Create the database tables
-with app.app_context():
+with application.application_context():
     db.create_all()
 
 # Route to serve the HTML form
-@app.route('/add_destination', methods=['GET'])
+@application.route('/add_destination', methods=['GET'])
 def add_destination_form():
     return render_template('add_destination.html')
 
 # Route to handle form submission
-@app.route('/add_destination', methods=['POST'])
+@application.route('/add_destination', methods=['POST'])
 def add_destination():
     # Get form data
     name = request.form['name']
@@ -164,5 +164,5 @@ def add_destination():
     return redirect(url_for('add_destination_form'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.run(debug=True)
 
