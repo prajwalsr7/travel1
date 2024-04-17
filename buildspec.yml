@@ -1,36 +1,31 @@
 version: 0.2
+
+env:
+    LOGIN: "a95ad9141e9eeb9d77ad06b52d353369f9167faf"
+    HOST: "https://sonarcloud.io"
+    Organization: "prajwalsr7"
+    Project: "prajwalsr7_travel1"
 phases:
   install:
     runtime-versions:
-      java: corretto17        
-      python: 3.11
-    commands:
-      - pip install --upgrade pip
-      # Install dependencies needed for running the static analysis
-      - java --version
-      - pip install -r $CODEBUILD_SRC_DIR/requirements.txt pylint
-      #- yum update
-      #- yum install -y jq
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-      - unzip ./sonar-scanner-cli-4.7.0.2747-linux.zip
-      - export PATH=$PATH:$PWD/sonar-scanner-4.7.0.2747-linux/bin/
-      - python --version
+      java: corretto21
   pre_build:
     commands:
-      #- pylint $CODEBUILD_SRC_DIR/*.py
-      #- pylint $CODEBUILD_SRC_DIR/*/*.py
-      - sonar-scanner -Dsonar.organization=prajwalsr7 -Dsonar.projectKey=prajwalsr7_travel1 -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=a95ad9141e9eeb9d77ad06b52d353369f9167faf
-      - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=prajwalsr7_travel1 > analysis.json
-      - cat analysis.json
+      - yum update -y
+      - yum install -y jq
+      - retry_count=3
+      - for i in $(seq 1 $retry_count); do wget https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz && break || sleep 10; done
+      - tar xzf apache-maven-3.5.4-bin.tar.gz || true
+      - ln -s apache-maven-3.5.4 maven
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+      - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
   build:
     commands:
-      - if [[ $(jq -r '.projectStatus.status' analysis.json) = "ERROR" ]] ; then CODEBUILD_BUILD_SUCCEEDING=0; fi
+      - mvn sonar:sonar -Dsonar.login=$LOGIN -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=prajwalsr7_travel1 -Dsonar.organization=prajwalsr7 || true
+      - sleep 5
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=prajwalsr7_travel1 >result.json
+      - cat result.json
+      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ] ; then $CODEBUILD_BUILD_SUCCEEDING -eq 0 ;fi
 artifacts:
   files:
     - '**/*'
-eb_codebuild_settings:
-  aws_beanstalk_application:
-    name: "X22228811"
-  aws_beanstalk_environment:
-    name: "X22228811-env"
