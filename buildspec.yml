@@ -19,9 +19,9 @@ phases:
     commands:
       #- pylint $CODEBUILD_SRC_DIR/*.py
       #- pylint $CODEBUILD_SRC_DIR/*/*.py
-      - sonar-scanner -Dsonar.organization=prajwalsr7 -Dsonar.projectKey=prajwalsr7_DiscussHub -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=8f463ae14dab99609c4b29b812d4fa5c2893af07
+      - sonar-scanner -Dsonar.organization=prajwalsr7 -Dsonar.projectKey=prajwalsr7_travel1 -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=a95ad9141e9eeb9d77ad06b52d353369f9167faf
       - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=prajwalsr7_DiscussHub > analysis.json
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=prajwalsr7_travel1 > analysis.json
       - cat analysis.json
   build:
     commands:
