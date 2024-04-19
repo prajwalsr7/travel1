@@ -4,12 +4,14 @@ import random
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_agency.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'x22228811'
+NEWS_API_URL = 'http://scaleable.eba-hk2jstsk.us-east-1.elasticbeanstalk.com/news'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -38,8 +40,25 @@ def logout():
     return redirect(url_for('index'))
 @app.route('/')
 def index():
-    is_authenticated = is_logged_in()
-    return render_template('index.html', is_authenticated=is_authenticated)
+    if is_logged_in():
+        news_data = fetch_news()
+        is_authenticated = is_logged_in()
+        return render_template('index.html', is_authenticated=is_authenticated,news=news_data)
+    else:
+        return redirect(url_for('login'))
+
+def fetch_news():
+    response = requests.get(NEWS_API_URL)
+    if response.status_code == 200:
+        news_data = response.json()
+        return news_data
+    else:
+        return []
+    
+#@app.route('/')
+#def index():
+    #is_authenticated = is_logged_in()
+    #return render_template('index.html', is_authenticated=is_authenticated)
 
 # Signup route
 @app.route('/signup', methods=['GET', 'POST'])

@@ -4,15 +4,15 @@
 {% block body %}
 <div class="slideshow-container">
     <div class="mySlides fade">
-        <img src="{{ url_for('static', filename='images/image1.png') }}" style="width:100%" height="400">
+        <img src="{{ url_for('static', filename='images/frankfurt.jpg') }}" style="width:100%" height="400">
     </div>
 
     <div class="mySlides fade">
-        <img src="{{ url_for('static', filename='images/image2.jpg') }}" style="width:100%" height="400">
+        <img src="{{ url_for('static', filename='images/goa.jpg') }}" style="width:100%" height="400">
     </div>
 
     <div class="mySlides fade">
-        <img src="{{ url_for('static', filename='images/image3.png') }}" style="width:100%" height="400">
+        <img src="{{ url_for('static', filename='images/prague.jpg') }}" style="width:100%" height="400">
     </div>
 
     <!-- Add more images as needed -->
@@ -23,11 +23,22 @@
 
 <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
 
+<script src="{{ url_for('static', filename='javascript/country.js') }}"></script>
+    <div class="grid-container">
+        {% for article in news %}
+            <div class="destination-card">
+                <img src="{{ article.urlToImage }}"  class="destination-image">
+                <h3>{{ article.title }}</h3>
+                <h5>Description: {{ article.description }}</h5>
+                <button class="button-57" role="button" target="_blank" onclick="window.location.href = '{{ article.url }}';"><span class="text">Read</span><span>More</span></button>
+            </div>
+        {% endfor %}
+    </div>
 
-    <footer>
-        <div class="container">
-            &copy; 2024 Travel Agency. All rights reserved.
-        </div>
-    </footer>
+
 {% endblock %}
-
+<footer>
+    <div class="container">
+        &copy; 2024 Travel Agency. All rights reserved.
+    </div>
+</footer>

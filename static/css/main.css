@@ -67,6 +67,11 @@
    font-size: 3em;
    color: #fff; 
   }
+
+  h3{
+    color: #ddd;
+    margin-bottom: 2vw;
+  }
   
   p {
    font-size: 1.2em; 
@@ -164,6 +169,9 @@
   background: #57bdef;
   color: #18181a;
   margin-left: 2vw;
+  margin-top: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 2vw;
 }
 .destination-image {
   width: 100%;
@@ -186,6 +194,7 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  margin-top: 2vw;
 }
 
 .button-57 span:first-child {
@@ -221,6 +230,7 @@
   transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
   transform: skewY(9.3deg) scaleY(0);
   z-index: 50;
+  margin-top: 2vw;
 }
 
 .button-57:hover:after {
