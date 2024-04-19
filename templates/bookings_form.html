@@ -1,22 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookings Form</title>
-</head>
+{% extends 'base.html' %}
+{% block body %}
 <body>
-    <h1>Bookings Form</h1>
-    <form action="/bookings" method="POST">
-        <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" required><br>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone" required><br>
+    <div class="container">
+    <form id="form" method="post" action="/bookings" autocomplete="off">
+        <h1 id="message">BOOKINGS</h1><small id="smallMessage"> </small>
+        <div class="field">
+          <input id="email" type="email" name="email" placeholder="Email" autocomplete="off"/>
+          <label for="email">Email</label>
+        </div>
+        <div class="field">
+          <input id="username" type="username" name="username" placeholder="Username" autocomplete="off"/>
+          <label for="username">Username</label>
+        </div>
+        <div class="field">
+          <input id="phone" type="phone" name="phone" placeholder="phone" autocomplete="phone"/>
+          <label for="phone">Phone number</label>
+        </div>
+        <div class="field">
+            <input id="password" type="password" name="password" placeholder="Password" autocomplete="new-password"/>
+            <label for="password">Password</label>
+          </div>
         <button type="submit">Book Now</button>
-    </form>
+        <p>Book your trip now and enjoy your journey</p>
+      </form>
+    <script src="{{ url_for('static', filename='javascript/form.js') }}"></script>
+    </div>
 </body>
-</html>
+{% endblock %}

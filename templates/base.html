@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <header>
         <nav>
-            <div class="container">
+            <!-- <div class="container"> -->
                 <a href="/">Home</a>
                 <div class="dropdown">
                     <button class="dropbtn">Destinations 
@@ -22,6 +22,60 @@
                       <a href="/australia">Australia</a>
                     </div> 
                 </div>
+
+                <!-- Trigger/Open The Modal -->
+                <button id="myBtn" class="myBtn">Open Modal</button>
+
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="form-container">
+                        <label for="amount" class="form-label">Amount:</label>
+                        <input type="number" id="amount" name="amount" class="form-input">
+                        
+                        <label for="from_currency" class="form-label">From:</label>
+                        <select id="from_currency" class="form-select">
+                          <option value="USD">USD</option>
+                          <option value="EUR">EUR</option>
+                          <option value="GBP">GBP</option>
+                          <option value="JPY">JPY</option>
+                          <option value="AUD">AUD</option>
+                          <option value="CAD">CAD</option>
+                          <option value="CHF">CHF</option>
+                          <option value="CNY">CNY</option>
+                          <option value="INR">INR</option>
+                          <!-- Add other currencies here -->
+                        </select>
+                        
+                        <label for="to_currency" class="form-label">To:</label>
+                        <select id="to_currency" class="form-select">
+                          <option value="USD">USD</option>
+                          <option value="EUR">EUR</option>
+                          <option value="GBP">GBP</option>
+                          <option value="AUD">AUD</option>
+                          <option value="CAD">CAD</option>
+                          <option value="CHF">CHF</option>
+                          <option value="CNY">CNY</option>
+                          <option value="INR">INR</option>
+                          <!-- Add other currencies here -->
+                        </select>
+                        
+                        <button class="form-button" role="button" onclick="convertCurrency()">Convert Currency</button>
+                        <div class="result-container" id="result">
+                            <div class="result-label">Converted Amount:</div>
+                            <div class="result-value"> <!-- This is where the converted amount will be displayed -->
+                              <!-- Result will be dynamically inserted here -->
+                            </div>
+                          </div>
+                          
+                      </div>
+                      
+                </div>
+                <script src="{{ url_for('static', filename='javascript/convert.js') }}"></script>
+                </div>
                 {% if not is_authenticated %}
                     <span class="auth-links">
                         <a href="/login">Login</a>
@@ -32,33 +86,7 @@
                         <a href="/logout">Logout</a>
                     </span>
                 {% endif %}
-                <div class="dropdown">
-                    <button class="dropbtn">Currency exchange 
-                      <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" value="1">
-                        <label for="from_currency">From:</label>
-                        <select id="from_currency">
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <!-- Add other currencies here -->
-                        </select>
-                        <label for="to_currency">To:</label>
-                        <select id="to_currency">
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <!-- Add other currencies here -->
-                        </select>
-                        <button class="button-57" role="button" onclick="convertCurrency()">Convert<span>Currency</span></button>
-                        <div id="result"></div>
-                        <script src="{{ url_for('static', filename='javascript/convert.js') }}"></script>
-                    </div> 
-                </div>
-            </div>
+            <!-- </div> -->
         </nav>
     </header>
     {% block head %}{% endblock %}
